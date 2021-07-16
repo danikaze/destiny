@@ -2,7 +2,6 @@ import { FC } from 'react';
 import Head from 'next/head';
 
 import styles from './page.module.css';
-import { ExampleNavBar } from '@components/example-nav-bar';
 
 export interface Props {
   /** Document title to appear as the tab name */
@@ -27,12 +26,10 @@ export const Page: FC<Props> = ({ title, description, header, children }) => {
         <meta name="theme-color" content="white" />
       </Head>
       <div className={styles.container}>
-        <ExampleNavBar />
         <main className={styles.main}>
           {h1}
           {children}
         </main>
-        <div>PRODUCTION: {IS_PRODUCTION ? 'true' : 'false'}</div>
       </div>
     </>
   );

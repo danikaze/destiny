@@ -10,10 +10,7 @@ import { AppContext, AppProps as NextJsAppProps } from 'next/app';
 import Head from 'next/head';
 import { appWithTranslation } from 'next-i18next';
 import { appWithAuth } from '@utils/auth';
-import { ThemeProvider } from '@material-ui/core/styles';
-import { CssBaseline } from '@material-ui/core';
 import { getLogger, globalLogger, Logger, NsLogger } from '@utils/logger';
-import { theme } from '@themes';
 import { UserAuthData } from '@model/user';
 
 import '@styles/reset-v2.css';
@@ -60,13 +57,9 @@ const App: AppType = ({ Component, pageProps }) => {
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
         />
-        <meta name="theme-color" content={theme.palette.primary.main} />
       </Head>
       <Logger.Provider value={globalLogger}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Component {...pageProps} />
-        </ThemeProvider>
+        <Component {...pageProps} />
       </Logger.Provider>
     </>
   );
