@@ -6,5 +6,5 @@ export type Props = {};
 export const IndexPage: FC<Props> = () => {
   const title = `${PACKAGE_NAME} - ${PACKAGE_VERSION} (${COMMIT_HASH_SHORT})`;
 
-  return <Page title={title} header="Index"></Page>;
+  return <Page active="index" title={title} header="Index" />;
 };

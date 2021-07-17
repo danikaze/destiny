@@ -1,9 +1,13 @@
 import { FC } from 'react';
 import Head from 'next/head';
+import { Header } from '@components/header';
+import { NavBar, PageType } from '@components/nav-bar';
+import { Footer } from '@components/footer';
 
-import styles from './page.module.css';
+import styles from './page.module.scss';
 
 export interface Props {
+  active: PageType;
   /** Document title to appear as the tab name */
   title: string;
   /** Content for the `<meta name="description">` tag */
@@ -12,7 +16,13 @@ export interface Props {
   header?: string;
 }
 
-export const Page: FC<Props> = ({ title, description, header, children }) => {
+export const Page: FC<Props> = ({
+  active,
+  title,
+  description,
+  header,
+  children,
+}) => {
   const h1 = header ? <h1 className={styles.header}>{header}</h1> : undefined;
   const desc = description ? (
     <meta name="Description" content={description} />
@@ -24,12 +34,18 @@ export const Page: FC<Props> = ({ title, description, header, children }) => {
         <title>{title}</title>
         {desc}
         <meta name="theme-color" content="white" />
+        <meta name="theme-color" content="white" />
       </Head>
-      <div className={styles.container}>
-        <main className={styles.main}>
-          {h1}
-          {children}
-        </main>
+      <div className={styles.root}>
+        <Header />
+        <NavBar active={active} />
+        <div className={styles.central}>
+          <main className={styles.main}>
+            {h1}
+            {children}
+          </main>
+        </div>
+        <Footer className={styles.footer} />
       </div>
     </>
   );
