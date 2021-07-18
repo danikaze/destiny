@@ -9,7 +9,7 @@ export const enum UserType {
 }
 
 export interface User {
-  userId: number;
+  userId: string;
   username: string;
   role: UserRole;
   type: UserType;
@@ -18,13 +18,13 @@ export interface User {
 type CreateUserData = Pick<User, 'username' | 'role' | 'type'>;
 
 export async function getUserAuthData(
-  userId: number | User
+  userId: User['userId'] | User
 ): Promise<UserAuthData | undefined> {
   // dynamic import to avoid loop dependencies when using mock data
   const { UserDB } = require('./mock');
 
   const user =
-    typeof userId === 'number'
+    typeof userId === 'string'
       ? UserDB.find((user: User) => user.userId === userId)
       : userId;
   if (!user) return;

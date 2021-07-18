@@ -301,7 +301,7 @@ function getUserData(role: string | false): UserAuthData | false {
     (role && {
       role: role as UserRole,
       username: 'username',
-      userId: 1,
+      userId: 'user-1',
     }) ||
     false
   );
