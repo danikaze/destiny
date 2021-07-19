@@ -3,6 +3,8 @@ import { Page } from '@components/page';
 import { Story } from '@model/story/interface';
 import { LinkToRead } from '@components/links/link-to-read';
 
+import styles from './stories.module.scss';
+
 export interface Props {
   stories: Story[];
 }
@@ -12,7 +14,7 @@ export const StoriesPage: FC<Props> = ({ stories }) => {
 
   return (
     <Page active="story" title={title} header="Stories">
-      <ul>{stories.map(renderStory)}</ul>
+      <ul className={styles.storyList}>{stories.map(renderStory)}</ul>
     </Page>
   );
 };
