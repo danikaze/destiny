@@ -4,6 +4,8 @@ import { Story, StoryOption, StoryPage } from '@model/story/interface';
 import { useReadPage } from './hooks';
 import { TextOption } from '@components/option-text';
 
+import styles from './read.module.scss';
+
 export interface Props {
   story: Story;
   page: StoryPage;
@@ -11,9 +13,11 @@ export interface Props {
 
 export const ReadPage: FC<Props> = (props) => {
   const title = `${PACKAGE_NAME} - ${PACKAGE_VERSION} (${COMMIT_HASH_SHORT})`;
-  const { selectOption, content, options } = useReadPage(props);
+  const { selectOption, subtitle, content, options } = useReadPage(props);
 
-  const optionsElem = options && <ul>{options.map(renderOption)}</ul>;
+  const optionsElem = options && (
+    <ul className={styles.optionsList}>{options.map(renderOption)}</ul>
+  );
 
   function renderOption(option: StoryOption): JSX.Element {
     return (
@@ -28,7 +32,12 @@ export const ReadPage: FC<Props> = (props) => {
   }
 
   return (
-    <Page active="story" title={title} header={props.story.title}>
+    <Page
+      active="story"
+      title={title}
+      header={subtitle}
+      subHeader={props.story.title}
+    >
       {content}
       {optionsElem}
     </Page>

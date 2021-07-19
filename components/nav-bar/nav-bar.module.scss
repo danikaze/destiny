@@ -1,18 +1,19 @@
-@use '../../styles/constants/breakpoints.scss' as breakpoints;
+@use '../../styles/constants/colors.scss' as colors;
 @use '../../styles/constants/z-index.scss' as zIndex;
 
 .root {
-  background-color: white;
+  background-color: colors.$paper;
   display: flex;
   justify-content: center;
   position: sticky;
   top: 0;
-  border-bottom: 3px solid #eeeeee;
-  color: #c7c7c7;
+  border-bottom: 1px solid colors.$border-light;
+  color: colors.$text-light;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 100;
   text-transform: uppercase;
   z-index: zIndex.$navBar;
+  box-shadow: 0 -2px 2px 5px colors.$shadow;
 
   li {
     display: inline-block;
@@ -23,12 +24,12 @@
     padding: 10px 15px;
 
     &:hover {
-      color: #4f4f4f;
-      background-color: #eeeeee;
+      color: colors.$text;
+      background-color: colors.$paper-light;
     }
   }
 
   .active {
-    color: #212121 !important;
+    color: colors.$text !important;
   }
 }

@@ -8,5 +8,5 @@ export interface Props {
 }
 
 export const Header: FC<Props> = ({ className }) => {
-  return <header className={clsx(styles.root, className)}>Header</header>;
+  return <header className={clsx(styles.root, className)}>Destiny</header>;
 };

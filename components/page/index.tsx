@@ -14,6 +14,8 @@ export interface Props {
   description?: string;
   /** Header at the top of the page */
   header?: string;
+  /** Subheader below the Header */
+  subHeader?: string;
 }
 
 export const Page: FC<Props> = ({
@@ -21,9 +23,22 @@ export const Page: FC<Props> = ({
   title,
   description,
   header,
+  subHeader,
   children,
 }) => {
-  const h1 = header ? <h1 className={styles.header}>{header}</h1> : undefined;
+  const headerMain = header ? (
+    <h1 className={styles.headerMain}>{header}</h1>
+  ) : undefined;
+  const headerSub = subHeader ? (
+    <h2 className={styles.headerSub}>{subHeader}</h2>
+  ) : undefined;
+  const headerElem =
+    headerMain || headerSub ? (
+      <div className={styles.header}>
+        {headerMain}
+        {headerSub}
+      </div>
+    ) : undefined;
   const desc = description ? (
     <meta name="Description" content={description} />
   ) : undefined;
@@ -41,7 +56,7 @@ export const Page: FC<Props> = ({
         <NavBar active={active} />
         <div className={styles.central}>
           <main className={styles.main}>
-            {h1}
+            {headerElem}
             {children}
           </main>
         </div>

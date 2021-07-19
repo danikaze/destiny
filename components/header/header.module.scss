@@ -1,7 +1,15 @@
+@use '../../styles/constants/z-index.scss' as zIndex;
+@use '../../styles/constants/colors.scss' as colors;
+
 .root {
-  color: #545454;
-  background-color: #f7f7f7;
+  color: colors.$text-dark;
+  font-size: xxx-large;
+  font-weight: 100;
+  background-color: colors.$paper;
+  border-top: 6px solid colors.$main;
+  border-bottom: 1px solid colors.$border-light;
   display: flex;
-  justify-content: center;
-  padding: 50px 0;
+  justify-content: flex-start;
+  padding: 20px 10px;
+  z-index: zIndex.$header;
 }
