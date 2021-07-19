@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { useTranslation } from 'next-i18next';
 import { FC } from 'react';
 
 import styles from './footer.module.scss';
@@ -8,5 +9,9 @@ export interface Props {
 }
 
 export const Footer: FC<Props> = ({ className }) => {
-  return <footer className={clsx(styles.root, className)}>Footer</footer>;
+  const { t } = useTranslation('common');
+
+  return (
+    <footer className={clsx(styles.root, className)}>{t('footer')}</footer>
+  );
 };

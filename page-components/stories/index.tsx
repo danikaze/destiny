@@ -1,3 +1,4 @@
+import { useTranslation } from 'next-i18next';
 import { FC } from 'react';
 import { Page } from '@components/page';
 import { Story } from '@model/story/interface';
@@ -10,10 +11,11 @@ export interface Props {
 }
 
 export const StoriesPage: FC<Props> = ({ stories }) => {
+  const { t } = useTranslation('common');
   const title = `${PACKAGE_NAME} - ${PACKAGE_VERSION} (${COMMIT_HASH_SHORT})`;
 
   return (
-    <Page active="story" title={title} header="Stories">
+    <Page active="story" title={title} header={t('sectionStories')}>
       <ul className={styles.storyList}>{stories.map(renderStory)}</ul>
     </Page>
   );

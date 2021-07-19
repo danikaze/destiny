@@ -8,6 +8,7 @@ module.exports = {
   i18n: {
     localePath: 'public/static/locales',
     defaultLocale: 'en',
+    defaultNS: 'common',
     locales: ['en', 'es'],
   },
 };

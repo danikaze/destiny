@@ -1,3 +1,4 @@
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { AppPage, GetServerSideProps } from '@_app';
 import { ReadPage, Props } from '@page-components/read';
 import { mockStories, mockStoryPages } from '@model/story/mock';
@@ -11,6 +12,7 @@ const ReadPageHandler: AppPage<Props> = ({ story, page }: Props) => {
 export default ReadPageHandler;
 
 export const getServerSideProps: GetServerSideProps<Props, Query> = async ({
+  locale,
   params,
 }) => {
   const storyId = params!.storyId;
@@ -20,6 +22,7 @@ export const getServerSideProps: GetServerSideProps<Props, Query> = async ({
 
   return {
     props: {
+      ...(await serverSideTranslations(locale!, ['common'])),
       story,
       page,
     },
