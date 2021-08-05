@@ -6,6 +6,7 @@ export interface Story extends TimestampData {
   title: string;
   entryPageId: StoryPage['pageId'];
   authorUserId: User['userId'];
+  lastPageId?: StoryPage['pageId'];
 }
 
 export interface StoryPage {

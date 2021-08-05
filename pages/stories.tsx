@@ -11,7 +11,7 @@ const StoriesPageHandler: AppPage<Props> = () => {
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale!, ['common'])),
+    ...(await serverSideTranslations(locale!, ['common', 'stories'])),
   },
 });
 
