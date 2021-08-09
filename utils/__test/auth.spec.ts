@@ -296,15 +296,14 @@ describe('adminRequiredApiHandler', () => {
 /*
  * Test helpers
  */
-function getUserData(role: string | false): UserAuthData | false {
-  return (
-    (role && {
-      role: role as UserRole,
-      username: 'username',
-      userId: 'user-1',
-    }) ||
-    false
-  );
+function getUserData(role: string | false): UserAuthData | undefined {
+  return role
+    ? {
+        role: role as UserRole,
+        username: 'username',
+        userId: 'user-1',
+      }
+    : undefined;
 }
 
 function getTestData(role: string | false, originalUrl: string = 'url') {

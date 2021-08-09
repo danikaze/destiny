@@ -24,7 +24,7 @@ interface AppPageProps {
 export type GetServerSidePropsContext<
   Q extends ParsedUrlQuery = ParsedUrlQuery
 > = GSSPCtx<Q> & {
-  req: { user: UserAuthData | false };
+  req: { user: UserAuthData | undefined };
 };
 
 export type GetServerSideProps<

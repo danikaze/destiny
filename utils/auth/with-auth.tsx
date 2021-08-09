@@ -9,17 +9,17 @@ import { NextComponentType } from 'next';
 interface AuthRequest extends IncomingMessage {
   session?: {
     passport: {
-      user: UserAuthData | false;
+      user: UserAuthData | undefined;
     };
   };
 }
 
 interface Props {
-  user?: UserAuthData | false;
+  user?: UserAuthData | undefined;
 }
 
 // this allows to maintain the user data in client-side navigation
-let userData: UserAuthData | false;
+let userData: UserAuthData | undefined;
 
 export type AcceptedComponent = ComponentType & {
   getInitialProps?: NextComponentType<AppContext>['getInitialProps'];
@@ -28,11 +28,11 @@ export type AcceptedComponent = ComponentType & {
 export function wrapApp(Component: AcceptedComponent): AppType {
   const AppWithAuth = ({ user, ...props }: Props) => {
     useEffect(() => {
-      userData = user || false;
+      userData = user;
     }, [user]);
 
     return (
-      <Auth.Provider value={user || false}>
+      <Auth.Provider value={user}>
         <Component {...props} />
       </Auth.Provider>
     );
@@ -45,7 +45,8 @@ export function wrapApp(Component: AcceptedComponent): AppType {
       : {};
 
     const req = appContext.ctx.req as AuthRequest;
-    let user: Props['user'] = !IS_SERVER && userData;
+    // tslint:disable-next-line:no-unnecessary-type-annotation
+    let user: Props['user'] = (!IS_SERVER && userData) || undefined;
     if (!user) {
       user =
         req && req.session && req.session.passport && req.session.passport.user;

@@ -1,3 +1,5 @@
+import { generateUniqueId } from '@model';
+
 export type UserRole = 'admin' | 'user';
 
 export type UserAuthData = Pick<User, 'userId' | 'username' | 'role'>;
@@ -40,8 +42,8 @@ export async function createUser(user: CreateUserData): Promise<UserAuthData> {
   // dynamic import to avoid loop dependencies when using mock data
   const { UserDB } = require('./mock');
 
-  const userId =
-    (UserDB.length === 0 ? 0 : UserDB[UserDB.length - 1].userId) + 1;
+  // tslint:disable-next-line:no-unnecessary-type-annotation
+  const userId: User['userId'] = generateUniqueId();
 
   const newUser: User = {
     ...user,
