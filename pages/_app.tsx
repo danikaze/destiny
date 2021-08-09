@@ -14,7 +14,7 @@ import { getLogger, globalLogger, Logger, NsLogger } from '@utils/logger';
 import { UserAuthData } from '@model/user';
 
 import '@styles/reset-v2.css';
-import '@styles/globals.css';
+import '@styles/globals.scss';
 
 export type AppPage<P = {}, IP = P> = NextPage<P & AppPageProps, IP>;
 interface AppPageProps {
