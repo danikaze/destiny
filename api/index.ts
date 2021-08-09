@@ -64,7 +64,7 @@ export interface ApiRequest<Q, B> extends IncomingMessage {
   cookies: {
     [key: string]: string;
   };
-  user: UserAuthData | false;
+  user: UserAuthData | undefined;
   env: {
     [key: string]: string;
   };

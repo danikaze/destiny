@@ -58,14 +58,14 @@ const logger = getLogger('auth');
 const USER_ROLES = ['user', 'admin'];
 const ADMIN_ROLES = ['admin'];
 
-export const Auth = createContext<UserAuthData | false>(false);
+export const Auth = createContext<UserAuthData | undefined>(undefined);
 Auth.displayName = 'Auth';
 
 /**
- * Hook that returns the available user data or `false` if not logged in
+ * Hook that returns the available user data or `undefined` if not logged in
  */
-export function useUserData(): UserAuthData | false {
-  return useContext(Auth);
+export function useUserData(): UserAuthData | undefined {
+  return useContext(Auth) || undefined;
 }
 
 export function appWithAuth(Component: AcceptedComponent) {
@@ -77,7 +77,7 @@ export function appWithAuth(Component: AcceptedComponent) {
  * If the user is not logged-in, it will return `noAuthProps`.
  * If the user is properly authenticated then `getServerSideProps` will be
  * called but this time the provided `ctx` is ensured to have `ctx.req.user`
- * with only `UserAuthData` (no `false` value possible)
+ * with only `UserAuthData` (no `undefined` value possible)
  */
 export function userRequiredServerSideProps<
   P extends IndexedObject = IndexedObject,
@@ -171,15 +171,15 @@ export function adminRequiredApiHandler<
 /**
  * Check that a user is properly logged
  */
-export function isUser(user: UserAuthData | false): boolean {
-  return user && USER_ROLES.includes(user.role);
+export function isUser(user: UserAuthData | undefined): boolean {
+  return (user && USER_ROLES.includes(user.role)) || false;
 }
 
 /**
  * Check that a user is logged as an admin role
  */
-export function isAdmin(user: UserAuthData | false): boolean {
-  return user && ADMIN_ROLES.includes(user.role);
+export function isAdmin(user: UserAuthData | undefined): boolean {
+  return (user && ADMIN_ROLES.includes(user.role)) || false;
 }
 
 function authRequiredServerSideProps<P, Q>(

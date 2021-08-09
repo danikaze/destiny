@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { customAlphabet } from 'nanoid';
 
 export type Id = string;
 
@@ -11,9 +11,17 @@ export interface TimestampData {
   updatedAt: TimestampUtc;
 }
 
+const nanoid = (() => {
+  const ID_LENGTH = 10;
+  return customAlphabet(
+    '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
+    ID_LENGTH
+  );
+})();
+
 /**
  * Generate a unique ID for the database
  */
 export function generateUniqueId(): string {
-  return uuidv4();
+  return nanoid();
 }

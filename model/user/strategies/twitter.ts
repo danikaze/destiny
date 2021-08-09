@@ -1,3 +1,4 @@
+import { generateUniqueId } from '@model';
 import { Profile } from 'passport-twitter';
 import { createUser, getUserAuthData, User, UserAuthData, UserType } from '..';
 
@@ -50,8 +51,8 @@ export async function createUserFromTwitter(
   if (existingUser) return (await getUserAuthData(existingUser))!;
 
   // if not, create a new one
-  const userId =
-    (UserDB.length === 0 ? 0 : UserDB[UserDB.length - 1].userId) + 1;
+  // tslint:disable-next-line:no-unnecessary-type-annotation
+  const userId: User['userId'] = generateUniqueId();
 
   const newUser = await createUser({
     username: profile.username!,

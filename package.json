@@ -33,6 +33,7 @@
     "cookie-parser": "^1.4.5",
     "cookie-session": "^1.4.0",
     "express": "^4.17.1",
+    "nanoid": "^3.1.23",
     "next": "^11.0.1",
     "next-i18next": "^8.5.3",
     "next-redux-wrapper": "^7.0.2",
@@ -47,7 +48,6 @@
     "redux-promise-middleware": "^6.1.2",
     "redux-thunk": "^2.3.0",
     "uid-safe": "^2.1.5",
-    "uuid": "^8.3.2",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.4"
   },
@@ -70,7 +70,6 @@
     "@types/redux-immutable-state-invariant": "^2.1.1",
     "@types/sinon": "^10.0.0",
     "@types/uid-safe": "^2.1.2",
-    "@types/uuid": "^8.3.1",
     "babel-core": "^6.26.3",
     "babel-jest": "^26.6.3",
     "babel-plugin-import": "^1.13.3",
