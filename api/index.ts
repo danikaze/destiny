@@ -11,6 +11,12 @@ export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 export enum HttpStatus {
   // 2xx Success
   OK = 200,
+  // 3xx Redirect
+  REDIRECT_MOVED_PERMANENT = 301,
+  REDIRECT_FOUND = 302,
+  REDIRECT_SEE_OTHER = 303,
+  REDIRECT_TEMPORARY = 307,
+  REDIRECT_PERMANENT = 308,
   // 4xx Client Error
   BAD_REQUEST = 400,
   HTTP_FORBIDDEN = 401,
