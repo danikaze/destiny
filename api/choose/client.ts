@@ -6,15 +6,10 @@ export async function callChooseStoryOption(
   storyId: Story['storyId'],
   pageId: StoryPage['pageId']
 ): Promise<ChooseStoryResponse> {
-  const res = await callApi<ChooseStoryResponse, ChooseStoryQuery>(
-    'choose',
-    'GET',
-    {
-      params: {
-        storyId,
-        pageId,
-      },
-    }
-  );
-  return res.data;
+  return await callApi<ChooseStoryResponse, ChooseStoryQuery>('choose', 'GET', {
+    params: {
+      storyId,
+      pageId,
+    },
+  });
 }
