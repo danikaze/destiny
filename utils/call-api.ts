@@ -17,8 +17,14 @@ export interface CallApiOptions<Q extends {} = {}, B extends {} = {}> {
   timeout?: number;
 }
 
-export interface ApiResponse<R> {
+interface ApiResponse<R> {
   data: R;
+}
+
+export interface ApiErrorResponse {
+  error: true;
+  msg: string;
+  id?: string;
 }
 
 type MethodOptions<
@@ -36,17 +42,13 @@ export function callApi<
   Q extends {} = {},
   B extends {} = {},
   M extends HttpMethod = HttpMethod
->(
-  apiUrl: string,
-  method: M,
-  opt: MethodOptions<M, Q, B> = {}
-): Promise<ApiResponse<R>> {
+>(apiUrl: string, method: M, opt: MethodOptions<M, Q, B> = {}): Promise<R> {
   const options = {
     ...defaultOptions,
     ...opt,
   };
 
-  return new Promise<ApiResponse<R>>((resolve, reject) => {
+  return new Promise<R>((resolve, reject) => {
     let timeoutHandler: number;
     if (options.timeout! > 0) {
       timeoutHandler = window.setTimeout(
@@ -73,9 +75,14 @@ export function callApi<
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then((response) => {
+    }).then(async (response) => {
       clearTimeout(timeoutHandler);
-      resolve(response.json());
+      const res = (await response.json()) as ApiResponse<R> | ApiErrorResponse;
+      if ('error' in res) {
+        reject(res);
+        return;
+      }
+      resolve(res.data);
     });
   });
 }
