@@ -5,6 +5,10 @@
  * https://nextjs.org/docs/advanced-features/i18n-routing
  */
 module.exports = {
+  // https://github.com/isaachinman/next-i18next/issues/1255
+  react: {
+    useSuspense: false,
+  },
   i18n: {
     localePath: 'public/static/locales',
     defaultLocale: 'en',
