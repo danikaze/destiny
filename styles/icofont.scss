@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'icofont';
+  src: url('../assets/fonts/icofont.ttf?bpy1dt') format('truetype'),
+    url('../assets/fonts/icofont.woff?bpy1dt') format('woff'),
+    url('../assets/fonts/icofont.svg?bpy1dt#icofont') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^='icon_icon-'],
+[class*=' icon_icon-'] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icofont' !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
