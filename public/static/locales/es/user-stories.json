@@ -1,0 +1,15 @@
+{
+  "yourStories": "Tus Historias",
+  "noUserStories": "Aún no has creado ninguna historia.",
+  "noUserStoriesCreateOneLink": "¿Crear una?",
+  "createStoryButton": "Crear nueva historia",
+  "createNewStory": "Nueva Historia",
+  "storyDefaultTitle": "Nueva Historia",
+  "storyTitle": "Título",
+  "storyStateDraft": "Borrador",
+  "storyStatePublished": "Publicado",
+  "deleteButtonTitle": "Borrar historia",
+  "readButtonTitle": "Leer historia",
+  "draftIconTitle": "Borrador privado",
+  "confirmDelete": "¿Seguro que quieres borrar esta historia?\n{{title}}"
+}
