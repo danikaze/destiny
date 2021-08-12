@@ -1,4 +1,4 @@
-import { Story, StoryPage } from './interface';
+import { Story, StoryPage, StoryState } from './interface';
 
 export const mockStories: Story[] = (() => {
   const now = Date.now();
@@ -6,6 +6,7 @@ export const mockStories: Story[] = (() => {
   return [
     {
       storyId: 'story-1',
+      state: StoryState.PUBLISHED,
       title: 'Test Story',
       entryPageId: 'page-1',
       authorUserId: 'user-1',
