@@ -6,12 +6,14 @@ export interface Props {
   storyId: Story['storyId'];
   fromPageId?: Story['lastPageId'];
   className?: string;
+  title?: string;
 }
 
 export const LinkToRead: FC<Props> = ({
   storyId,
   fromPageId,
   className,
+  title,
   children,
 }) => {
   const url = fromPageId
@@ -20,7 +22,9 @@ export const LinkToRead: FC<Props> = ({
 
   return (
     <Link href={url}>
-      <a className={className}>{children}</a>
+      <a className={className} title={title}>
+        {children}
+      </a>
     </Link>
   );
 };

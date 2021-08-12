@@ -1,17 +1,21 @@
-import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { AppPage } from '@_app';
-import { Props } from '@page-components/index';
-import { StoriesPage } from '@page-components/stories';
+import { AppPage, GetServerSideProps } from '@_app';
+import { StoriesPage, Props } from '@page-components/stories';
 import { mockStories } from '@model/story/mock';
+import { StoryState } from '@model/story/interface';
 
-const StoriesPageHandler: AppPage<Props> = () => {
-  return <StoriesPage stories={mockStories} />;
+const StoriesPageHandler: AppPage<Props> = (props: Props) => {
+  return <StoriesPage {...props} />;
 };
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  locale,
+}) => ({
   props: {
     ...(await serverSideTranslations(locale!, ['common', 'stories'])),
+    stories: mockStories.filter(
+      (story) => story.state === StoryState.PUBLISHED
+    ),
   },
 });
 

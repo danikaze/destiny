@@ -1,0 +1,15 @@
+{
+  "yourStories": "Your Stories",
+  "noUserStories": "You don't have any stories yet.",
+  "noUserStoriesCreateOneLink": "Create one?",
+  "createStoryButton": "Create new story",
+  "createNewStory": "New Story",
+  "storyDefaultTitle": "New Story",
+  "storyTitle": "Title",
+  "storyStateDraft": "Draft",
+  "storyStatePublished": "Published",
+  "deleteButtonTitle": "Delete story",
+  "readButtonTitle": "Read story",
+  "draftIconTitle": "Private draft",
+  "confirmDelete": "Are you sure you want to delete the following story?\n{{title}}"
+}
