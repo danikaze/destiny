@@ -3,7 +3,7 @@ module.exports = {
   REDUX_ENABLED: false,
   AUTH_ENABLED: true,
   AUTH_LOGIN_PAGE: '/login',
-  AUTH_LOGIN_SUCCESS_PAGE: '/auth?logged=1',
+  AUTH_LOGIN_SUCCESS_PAGE: '/user?logged=1',
   AUTH_LOGIN_FAIL_PAGE: '/login?fail=1',
   AUTH_LOGOUT_PAGE: '/login?logout',
   AUTH_DO_LOGOUT_URL: '/auth/logout',

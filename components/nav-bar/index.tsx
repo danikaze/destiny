@@ -4,6 +4,7 @@ import { LinkToIndex } from '@components/links/link-to-index';
 
 import styles from './nav-bar.module.scss';
 import { LinkToStories } from '@components/links/link-to-stories';
+import { LinkToUser } from '@components/links/link-to-user';
 
 export type PageType = 'index' | 'user' | 'story' | 'other';
 
@@ -22,6 +23,9 @@ export const NavBar: FC<Props> = ({ active }) => {
           <LinkToStories
             className={clsx(active === 'story' && styles.active)}
           />
+        </li>
+        <li>
+          <LinkToUser className={clsx(active === 'user' && styles.active)} />
         </li>
       </ul>
     </nav>
