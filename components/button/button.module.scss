@@ -1,0 +1,35 @@
+@use '../../styles/constants/colors.scss' as colors;
+@use '../../styles/constants/animations.scss' as animations;
+@use '../../styles/constants/z-index.scss' as zIndex;
+
+.root {
+  cursor: pointer;
+  display: inline-block;
+  padding: 5px 15px;
+  border: 1px solid colors.$shadow;
+  border-radius: 3px;
+  color: colors.$text;
+  background: colors.$paper-light;
+  transition: background-color animations.$hover-duration;
+
+  &:hover {
+    background: colors.$paper-light-dark;
+  }
+
+  &.disabled {
+    cursor: default;
+    background: colors.$paper-light-darker;
+  }
+
+  &.primary {
+    background: colors.$main;
+
+    &:hover {
+      background: colors.$main-light;
+    }
+
+    &.disabled {
+      background: colors.$main-darker;
+    }
+  }
+}
