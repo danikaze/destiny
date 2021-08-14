@@ -1,8 +1,12 @@
 import { createRef, useState } from 'react';
+import { useTranslation } from 'next-i18next';
+
+import { callEditStoryApi } from '@api/user-story/client';
+import { callDeleteStoryPageApi } from '@api/user-story-page/client';
 import { Story, StoryPage, StoryState } from '@model/story/interface';
 import { UserAuthData } from '@model/user';
 import { useUserData } from '@utils/auth';
-import { callEditStoryApi } from '@api/user-story/client';
+
 import { Props } from '.';
 
 interface State {
@@ -11,6 +15,7 @@ interface State {
 }
 
 export function useUserStory(props: Props) {
+  const { t } = useTranslation('user-stories');
   const user = useUserData()!;
   const [state, setState] = useState<State>(getInitialState(user, props));
   const titleRef = createRef<HTMLInputElement>();
@@ -49,8 +54,27 @@ export function useUserStory(props: Props) {
     }));
   }
 
+  async function deleteStory(page: StoryPage) {
+    const deleteIt = confirm(t('confirmPageDelete', { name: page.name }));
+    if (!deleteIt) return;
+
+    await callDeleteStoryPageApi(page.storyId, page.pageId);
+
+    const pages = [...state.pages];
+    const index = pages.findIndex((p) => p.pageId === page.pageId);
+    if (index === -1) return;
+
+    pages.splice(index, 1);
+    setState((state) => ({
+      ...state,
+      pages,
+    }));
+  }
+
   return {
+    t,
     saveStory,
+    deleteStory,
     titleChangeHandler,
     stateChangeHandler,
     titleRef,

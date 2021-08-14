@@ -1,9 +1,10 @@
 import { AppPage } from '@_app';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { UserStoryPage, Props } from '@page-components/user-story';
-import { userRequiredServerSideProps } from '@utils/auth';
+
 import { mockStories, mockStoryPages } from '@model/story/mock';
 import { Story } from '@model/story/interface';
+import { userRequiredServerSideProps } from '@utils/auth';
+import { UserStoryPage, Props } from '@page-components/user-story';
 
 interface Query {
   storyId?: Story['storyId'];
