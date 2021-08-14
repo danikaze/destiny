@@ -3,7 +3,7 @@
   "noUserStories": "Aún no has creado ninguna historia.",
   "noUserStoriesCreateOneLink": "¿Crear una?",
   "createStoryButton": "Crear nueva historia",
-  "createNewStory": "Nueva Historia",
+  "storyPageTitle": "Historia",
   "storyDefaultTitle": "Nueva Historia",
   "storyTitle": "Título",
   "storyStateDraft": "Borrador",
@@ -11,5 +11,15 @@
   "deleteButtonTitle": "Borrar historia",
   "readButtonTitle": "Leer historia",
   "draftIconTitle": "Borrador privado",
-  "confirmDelete": "¿Seguro que quieres borrar esta historia?\n{{title}}"
+  "confirmDelete": "¿Seguro que quieres borrar esta historia?\n{{title}}",
+  "confirmPageDelete": "¿Seguro que quieres borrar esta página?\n{{name}}",
+  "confirmOptionDelete": "¿Seguro que quieres borrar esta opción?\n{{text}}",
+  "createPageButton": "Nueva página",
+  "pageDefaultTitle": "Nueva Página",
+  "pageTitle": "Nombre de la página",
+  "pageContents": "Contenidos",
+  "pagePageTitle": "Página de la Historia",
+  "pageOptions": "Opciones",
+  "createOptionButton": "Añadir nueva opción",
+  "deleteOptionButtonTitle": "Borrar opción"
 }

@@ -3,7 +3,7 @@
   "noUserStories": "You don't have any stories yet.",
   "noUserStoriesCreateOneLink": "Create one?",
   "createStoryButton": "Create new story",
-  "createNewStory": "New Story",
+  "storyPageTitle": "Story",
   "storyDefaultTitle": "New Story",
   "storyTitle": "Title",
   "storyStateDraft": "Draft",
@@ -11,5 +11,15 @@
   "deleteButtonTitle": "Delete story",
   "readButtonTitle": "Read story",
   "draftIconTitle": "Private draft",
-  "confirmDelete": "Are you sure you want to delete the following story?\n{{title}}"
+  "confirmDelete": "Are you sure you want to delete the following story?\n{{title}}",
+  "confirmPageDelete": "Are you sure you want to delete the following page?\n{{name}}",
+  "confirmOptionDelete": "Are you sure you want to delete the following option?\n{{text}}",
+  "createPageButton": "Create new page",
+  "pageDefaultTitle": "New Page",
+  "pageTitle": "Page name",
+  "pageContents": "Page contents",
+  "pagePageTitle": "Story Page",
+  "pageOptions": "Options",
+  "createOptionButton": "Add new option",
+  "deleteOptionButtonTitle": "Delete option"
 }
