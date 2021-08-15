@@ -6,6 +6,7 @@ import { callDeleteStoryPageApi } from '@api/user-story-page/client';
 import { Story, StoryPage, StoryState } from '@model/story/interface';
 import { UserAuthData } from '@model/user';
 import { useUserData } from '@utils/auth';
+import { useLogger } from '@utils/logger';
 
 import { Props } from '.';
 
@@ -15,6 +16,7 @@ interface State {
 }
 
 export function useUserStory(props: Props) {
+  const logger = useLogger('user-stories');
   const { t } = useTranslation('user-stories');
   const user = useUserData()!;
   const [state, setState] = useState<State>(getInitialState(user, props));
@@ -30,7 +32,7 @@ export function useUserStory(props: Props) {
         entryPageId: state.story.entryPageId,
       });
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     }
   }
 
