@@ -1,5 +1,6 @@
 import { callDeleteStoryApi } from '@api/user-story/client';
 import { Story } from '@model/story/interface';
+import { useLogger } from '@utils/logger';
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
 import { Props } from '.';
@@ -9,6 +10,7 @@ interface State {
 }
 
 export function useUserStories(props: Props) {
+  const logger = useLogger('user-story');
   const { t } = useTranslation('user-stories');
   const [state, setState] = useState<State>({ stories: props.stories });
 
@@ -24,7 +26,7 @@ export function useUserStories(props: Props) {
     try {
       await callDeleteStoryApi(storyId);
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       return;
     }
 

@@ -3,6 +3,7 @@ import { useTranslation } from 'next-i18next';
 
 import { callEditStoryPageApi } from '@api/user-story-page/client';
 import { StoryOption, StoryPage } from '@model/story/interface';
+import { useLogger } from '@utils/logger';
 
 import { Props } from '.';
 
@@ -12,6 +13,7 @@ interface State {
 }
 
 export function useUserStoryPage(props: Props) {
+  const logger = useLogger('user-story-page');
   const { t } = useTranslation('user-stories');
   const [state, setState] = useState<State>({
     page: {
@@ -31,7 +33,7 @@ export function useUserStoryPage(props: Props) {
         name,
       });
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     }
   }
 
