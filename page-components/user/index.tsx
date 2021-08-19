@@ -1,16 +1,18 @@
 import { useTranslation } from 'next-i18next';
 import { FC } from 'react';
-import { Story } from '@model/story/interface';
 import { Page } from '@components/page';
 import { Icon } from '@components/icon';
 import { UserAccountInfo } from '@components/user-account-info';
-import { UserStories } from '@components/user-stories';
+import {
+  UserStories,
+  Props as UserStoriesProps,
+} from '@components/user-stories';
 import { LinkToUserStory } from '@components/links/link-to-user-story';
 
 import styles from './user.module.scss';
 
 export interface Props {
-  stories: Story[];
+  stories: UserStoriesProps['stories'];
 }
 
 export const UserPage: FC<Props> = ({ stories }) => {

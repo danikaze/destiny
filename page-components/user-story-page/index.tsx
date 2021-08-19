@@ -1,16 +1,18 @@
 import { TFunction, useTranslation } from 'next-i18next';
 import { FC } from 'react';
 
-import { Story, StoryPage } from '@model/story/interface';
 import { Page } from '@components/page';
-import { UserStoryPage } from '@components/user-story-page';
+import {
+  UserStoryPage,
+  Props as UserStoryPageProps,
+} from '@components/user-story-page';
 
 import styles from './user-story.module.scss';
 
 export interface Props {
-  story: Story | null;
-  page: StoryPage | null;
-  pages: Pick<StoryPage, 'pageId' | 'name'>[] | null;
+  story: UserStoryPageProps['story'] | null;
+  page: UserStoryPageProps['page'] | null;
+  pages: UserStoryPageProps['pages'] | null;
 }
 
 export const UserStoryPagePage: FC<Props> = ({ story, page, pages }) => {
@@ -32,9 +34,9 @@ function renderNoData(t: TFunction): JSX.Element {
 }
 
 function renderStory(
-  story: Story,
-  page: StoryPage,
-  pages: Pick<StoryPage, 'pageId' | 'name'>[]
+  story: UserStoryPageProps['story'],
+  page: UserStoryPageProps['page'],
+  pages: UserStoryPageProps['pages']
 ): JSX.Element {
   return <UserStoryPage story={story} page={page} pages={pages} />;
 }

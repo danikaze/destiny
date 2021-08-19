@@ -8,7 +8,7 @@ import { useLogger } from '@utils/logger';
 import { Props } from '.';
 
 interface State {
-  page: StoryPage & Required<Pick<StoryPage, 'options'>>;
+  page: Props['page'] & Required<Pick<Props['page'], 'options'>>;
   activeOption: StoryOption | null;
 }
 

@@ -6,9 +6,13 @@ import { TextOption } from '@components/option-text';
 
 import styles from './read.module.scss';
 
+export type StoryProps = Pick<Story, 'storyId' | 'title'>;
+export type StoryPageProps = Pick<StoryPage, 'name' | 'content' | 'options'>;
+
+// TODO: Handle not found story/page
 export interface Props {
-  story: Story;
-  page: StoryPage;
+  story: StoryProps;
+  page: StoryPageProps;
 }
 
 export const ReadPage: FC<Props> = (props) => {

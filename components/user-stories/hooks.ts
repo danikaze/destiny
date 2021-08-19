@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { Props } from '.';
 
 interface State {
-  stories: Story[];
+  stories: Props['stories'];
 }
 
 export function useUserStories(props: Props) {

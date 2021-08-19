@@ -8,8 +8,10 @@ import { ListItem } from '@components/list-item';
 import styles from './stories.module.scss';
 import { useStoriesPage } from './hooks';
 
+export type StoryProps = Pick<Story, 'storyId' | 'lastPageId' | 'title'>;
+
 export interface Props {
-  stories: Story[];
+  stories: StoryProps[];
 }
 
 export const StoriesPage: FC<Props> = (props) => {
@@ -32,7 +34,7 @@ function storyRenderer(
   t: TFunction,
   removeClientPageMarker: (storyId: Story['storyId']) => void
 ) {
-  return (story: Story): JSX.Element => {
+  return (story: StoryProps): JSX.Element => {
     const actions = [];
     if (story.lastPageId) {
       const clickHandler = () => removeClientPageMarker(story.storyId);

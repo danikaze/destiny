@@ -10,9 +10,15 @@ import { useUserStory } from './hooks';
 import styles from './user-story.module.scss';
 import { Icon } from '@components/icon';
 
+export type StoryProps = Pick<
+  Story,
+  'storyId' | 'state' | 'entryPageId' | 'title'
+>;
+export type StoryPageProps = Pick<StoryPage, 'pageId' | 'name' | 'storyId'>;
+
 export type Props = {
-  story: Story;
-  pages: StoryPage[];
+  story: StoryProps;
+  pages: StoryPageProps[];
   className?: string;
 };
 
@@ -49,9 +55,9 @@ export const UserStory: FC<Props> = ({ className, ...props }) => {
 
 function renderPages(
   t: TFunction,
-  story: Story,
-  pages: StoryPage[],
-  deleteStory: (page: StoryPage) => void
+  story: StoryProps,
+  pages: StoryPageProps[],
+  deleteStory: ReturnType<typeof useUserStory>['deleteStory']
 ) {
   const pageList = pages.map((page) => {
     const deleteHandler = () => deleteStory(page);
