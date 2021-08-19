@@ -10,10 +10,17 @@ import { Button } from '@components/button';
 import { useUserStoryPage } from './hooks';
 import styles from './user-story-page.module.scss';
 
+type StoryProps = Pick<Story, 'storyId'>;
+type StoryPageProps = Pick<
+  StoryPage,
+  'storyId' | 'pageId' | 'name' | 'content' | 'options'
+>;
+type StoryPageListItem = Pick<StoryPage, 'pageId' | 'name'>;
+
 export interface Props {
-  story: Story;
-  page: StoryPage;
-  pages: Pick<StoryPage, 'pageId' | 'name'>[];
+  story: StoryProps;
+  page: StoryPageProps;
+  pages: StoryPageListItem[];
   className?: string;
 }
 

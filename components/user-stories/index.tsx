@@ -9,8 +9,10 @@ import { useUserStories } from './hooks';
 
 import styles from './user-stories.module.scss';
 
+type StoryProps = Pick<Story, 'storyId' | 'title' | 'state'>;
+
 export type Props = {
-  stories: Story[];
+  stories: StoryProps[];
   className?: string;
 };
 
@@ -42,7 +44,7 @@ function storyRenderer(
   t: TFunction,
   deleteStory: (storyId: Story['storyId']) => Promise<void>
 ) {
-  return (story: Story): ReactNode => {
+  return (story: StoryProps): ReactNode => {
     const { storyId, title } = story;
     const hiddenElem =
       story.state === 'draft' ? (

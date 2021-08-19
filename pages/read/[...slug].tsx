@@ -2,6 +2,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { AppPage, GetServerSideProps } from '@_app';
 import { ReadPage, Props } from '@page-components/read';
 import { mockStories, mockStoryPages } from '@model/story/mock';
+import { pick } from '@utils/pick';
 
 type Query = { slug: string[] };
 
@@ -16,12 +17,16 @@ export const getServerSideProps: GetServerSideProps<Props, Query> = async ({
   params,
 }) => {
   const { storyId, pageId } = getRequestData(params!.slug);
-  const story = mockStories.find((story) => story.storyId === storyId)!;
-  const page =
+
+  const rawStory = mockStories.find((story) => story.storyId === storyId)!;
+  const story = pick(rawStory, ['storyId', 'title']);
+
+  const rawPage =
     story &&
     mockStoryPages.find(
-      (page) => page.pageId === (pageId || story.entryPageId)
+      (page) => page.pageId === (pageId || rawStory.entryPageId)
     )!;
+  const page = pick(rawPage, ['name', 'content', 'options']);
 
   return {
     props: {

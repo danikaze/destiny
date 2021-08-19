@@ -8,11 +8,11 @@ import { UserAuthData } from '@model/user';
 import { useUserData } from '@utils/auth';
 import { useLogger } from '@utils/logger';
 
-import { Props } from '.';
+import { Props, StoryPageProps, StoryProps } from '.';
 
 interface State {
-  story: Story;
-  pages: StoryPage[];
+  story: StoryProps;
+  pages: StoryPageProps[];
 }
 
 export function useUserStory(props: Props) {
@@ -56,7 +56,9 @@ export function useUserStory(props: Props) {
     }));
   }
 
-  async function deleteStory(page: StoryPage) {
+  async function deleteStory(
+    page: Pick<StoryPage, 'storyId' | 'name' | 'pageId'>
+  ) {
     const deleteIt = confirm(t('confirmPageDelete', { name: page.name }));
     if (!deleteIt) return;
 

@@ -1,14 +1,13 @@
 import { TFunction, useTranslation } from 'next-i18next';
 import { FC } from 'react';
-import { Story, StoryPage } from '@model/story/interface';
 import { Page } from '@components/page';
-import { UserStory } from '@components/user-story';
+import { UserStory, Props as UserStoryProps } from '@components/user-story';
 
 import styles from './user-story.module.scss';
 
 export interface Props {
-  story?: Story | null;
-  pages?: StoryPage[] | null;
+  story?: UserStoryProps['story'] | null;
+  pages?: UserStoryProps['pages'] | null;
 }
 
 export const UserStoryPage: FC<Props> = ({ story, pages }) => {
@@ -29,6 +28,9 @@ function renderNoStory(t: TFunction): JSX.Element {
   return <div>No story found with the provided data.</div>;
 }
 
-function renderStory(story: Story, pages: StoryPage[]): JSX.Element {
+function renderStory(
+  story: UserStoryProps['story'],
+  pages: UserStoryProps['pages']
+): JSX.Element {
   return <UserStory story={story} pages={pages} />;
 }

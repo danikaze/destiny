@@ -1,10 +1,10 @@
 import { Story } from '@model/story/interface';
 import { ClientStorage } from '@utils/storage';
 import { useEffect, useState } from 'react';
-import { Props } from '.';
+import { Props, StoryProps } from '.';
 
 interface State {
-  stories: Story[];
+  stories: (StoryProps & Pick<Story, 'lastPageId'>)[];
 }
 
 export function useStoriesPage({ stories }: Props) {
@@ -44,14 +44,14 @@ export function useStoriesPage({ stories }: Props) {
   };
 }
 
-function addClientPageMarkers(stories: Story[]) {
+function addClientPageMarkers(stories: Props['stories']): State['stories'] {
   const storage = new ClientStorage(localStorage, 'pagemarker');
   const pagemarkers = storage.get('lastPages') || {};
 
   return stories.map((story) => {
     return {
       ...story,
-      lastPageId: story.lastPageId || pagemarkers[story.storyId],
+      lastPageId: pagemarkers[story.storyId],
     };
   }, []);
 }
