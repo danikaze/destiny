@@ -2,9 +2,9 @@ import { i18n } from 'next-i18next';
 import { AppPage } from '@_app';
 import { HttpStatus } from '@api';
 import { userRequiredServerSideProps } from '@utils/auth';
-import { mockStories, mockStoryPages } from '@model/story/mock';
 import { Story, StoryPage, StoryState } from '@model/story/interface';
 import { generateUniqueId } from '@model';
+import { createStory, createStoryPage } from '@model/story';
 
 const UserStoryPageHandler: AppPage = () => null;
 
@@ -33,8 +33,8 @@ export const getServerSideProps = userRequiredServerSideProps(
       options: [],
     };
 
-    mockStories.push(story);
-    mockStoryPages.push(entryPage);
+    await createStory(story);
+    await createStoryPage(entryPage);
 
     return {
       redirect: {

@@ -1,16 +1,14 @@
 import { apiError, ApiHandler } from '@api';
-import { mockStoryPages } from '@model/story/mock';
+import { readStoryPage } from '@model/story';
 import { ChooseStoryQuery, ChooseStoryResponse } from './interface';
 
 export const chooseStoryOption: ApiHandler<
   ChooseStoryResponse,
   ChooseStoryQuery
-> = (req, res) => {
+> = async (req, res) => {
   const { pageId, storyId } = req.query;
 
-  const page = mockStoryPages.find(
-    (page) => page.pageId === pageId && page.storyId === storyId
-  )!;
+  const page = await readStoryPage(storyId, pageId);
 
   if (!page) {
     return apiError(res, { error: 'Invalid data' });

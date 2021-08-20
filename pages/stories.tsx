@@ -1,8 +1,7 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { AppPage, GetServerSideProps } from '@_app';
 import { StoriesPage, Props } from '@page-components/stories';
-import { mockStories } from '@model/story/mock';
-import { StoryState } from '@model/story/interface';
+import { readPublishedStories } from '@model/story';
 import { pick } from '@utils/pick';
 
 const StoriesPageHandler: AppPage<Props> = (props: Props) => {
@@ -14,9 +13,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 }) => ({
   props: {
     ...(await serverSideTranslations(locale!, ['common', 'stories'])),
-    stories: mockStories
-      .filter((story) => story.state === StoryState.PUBLISHED)
-      .map((story) => pick(story, ['storyId', 'title', 'lastPageId'])),
+    stories: (await readPublishedStories()).map((story) =>
+      pick(story, ['storyId', 'title', 'lastPageId'])
+    ),
   },
 });
 

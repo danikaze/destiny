@@ -1,5 +1,5 @@
 import { apiError } from '@api';
-import { mockStories } from '@model/story/mock';
+import { updateStory } from '@model/story';
 import { userRequiredApiHandler } from '@utils/auth';
 import { EditStoryQuery, EditStoryBody, EditStoryResponse } from './interface';
 
@@ -7,28 +7,16 @@ export const editStoryApiHandler = userRequiredApiHandler<
   EditStoryResponse,
   EditStoryQuery,
   EditStoryBody
->((req, res) => {
-  const user = req.user!;
+>(async (req, res) => {
+  const { userId } = req.user!;
   const { storyId } = req.query;
   const { title, state, entryPageId } = req.body;
 
-  const story = mockStories.find(
-    (story) => story.authorUserId === user.userId && story.storyId === storyId
-  );
-
-  if (!story) {
-    apiError(res, { error: 'Invalid storyId' });
+  try {
+    await updateStory(userId, storyId, { title, state, entryPageId });
+  } catch (error) {
+    apiError(res, { error });
     return;
-  }
-
-  if (title !== undefined) {
-    story.title = title;
-  }
-  if (state !== undefined) {
-    story.state = state;
-  }
-  if (entryPageId !== undefined) {
-    story.entryPageId = entryPageId;
   }
 
   return res.json({ data: {} });

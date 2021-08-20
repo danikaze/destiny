@@ -3,7 +3,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { UserPage, Props } from '@page-components/user';
 import { userRequiredServerSideProps } from '@utils/auth';
 import { pick } from '@utils/pick';
-import { mockStories } from '@model/story/mock';
+import { readUserStories } from '@model/story';
 
 const UserPageHandler: AppPage<Props> = (props) => {
   return <UserPage {...props} />;
@@ -11,10 +11,10 @@ const UserPageHandler: AppPage<Props> = (props) => {
 
 export const getServerSideProps = userRequiredServerSideProps<Props>(
   async ({ locale, req }) => {
-    const user = req.user;
-    const stories = mockStories
-      .filter((story) => story.authorUserId === user.userId)
-      .map((story) => pick(story, ['storyId', 'title', 'state']));
+    const { userId } = req.user;
+    const stories = (await readUserStories(userId)).map((story) =>
+      pick(story, ['storyId', 'title', 'state'])
+    );
 
     return {
       props: {
