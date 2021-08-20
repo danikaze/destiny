@@ -1,10 +1,10 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { AppPage } from '@_app';
 import { StoryPage } from '@model/story/interface';
-import { mockStories, mockStoryPages } from '@model/story/mock';
 import { userRequiredServerSideProps } from '@utils/auth';
 import { pick } from '@utils/pick';
 import { UserStoryPagePage, Props } from '@page-components/user-story-page';
+import { readUserStory } from '@model/story';
 
 interface Query {
   storyId: StoryPage['storyId'];
@@ -17,30 +17,25 @@ const UserStoryPagePageHandler: AppPage<Props> = (props) => {
 
 export const getServerSideProps = userRequiredServerSideProps<Props, Query>(
   async ({ locale, req, query }) => {
-    const user = req.user;
+    const { userId } = req.user;
     const { storyId, pageId } = query;
 
-    let story: Props['story'] =
-      mockStories.filter(
-        (story) =>
-          story.authorUserId === user.userId && story.storyId === storyId
-      )[0] || null;
-    story = story ? pick(story, ['storyId']) : null;
+    const data = await readUserStory(userId, storyId as string);
+    let story: Props['story'] = null;
+    let page: Props['page'] = null;
+    let pages: Props['pages'] = null;
 
-    const allPages = story
-      ? mockStoryPages.filter((page) => page.storyId === storyId)
-      : null;
-
-    let page = allPages
-      ? allPages.filter((page) => page.pageId === pageId)[0]
-      : null;
-    page = page
-      ? pick(page, ['storyId', 'pageId', 'name', 'content', 'options'])
-      : null;
-
-    const pages = allPages
-      ? allPages.map((page) => pick(page, ['pageId', 'name']))
-      : null;
+    if (data) {
+      story = data.story;
+      page = pick(data.pages.filter((page) => page.pageId === pageId)[0], [
+        'storyId',
+        'pageId',
+        'name',
+        'content',
+        'options',
+      ]);
+      pages = data.pages.map((page) => pick(page, ['pageId', 'name']));
+    }
 
     return {
       props: {

@@ -2,9 +2,9 @@ import { i18n } from 'next-i18next';
 import { AppPage } from '@_app';
 import { HttpStatus } from '@api';
 import { userRequiredServerSideProps } from '@utils/auth';
-import { mockStoryPages } from '@model/story/mock';
 import { StoryPage } from '@model/story/interface';
 import { generateUniqueId } from '@model';
+import { createStoryPage } from '@model/story';
 
 const UserStoryPagePageHandler: AppPage = () => null;
 
@@ -25,7 +25,7 @@ export const getServerSideProps = userRequiredServerSideProps<{}, Query>(
       options: [],
     };
 
-    mockStoryPages.push(page);
+    await createStoryPage(page);
 
     return {
       redirect: {

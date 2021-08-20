@@ -1,4 +1,4 @@
-import { mockStories } from '@model/story/mock';
+import { deleteUserStory } from '@model/story';
 import { userRequiredApiHandler } from '@utils/auth';
 import {
   DeleteStoryQuery,
@@ -10,17 +10,11 @@ export const deleteStoryApiHandler = userRequiredApiHandler<
   DeleteStoryResponse,
   DeleteStoryQuery,
   DeleteStoryBody
->((req, res) => {
-  const user = req.user!;
+>(async (req, res) => {
+  const { userId } = req.user!;
   const { storyId } = req.query;
 
-  const storyIndex = mockStories.findIndex(
-    (story) => story.authorUserId === user.userId && story.storyId === storyId
-  );
-
-  if (storyIndex !== -1) {
-    mockStories.splice(storyIndex, 1);
-  }
+  await deleteUserStory(userId, storyId);
 
   return res.json({ data: {} });
 });

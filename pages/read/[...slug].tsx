@@ -1,8 +1,8 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { AppPage, GetServerSideProps } from '@_app';
 import { ReadPage, Props } from '@page-components/read';
-import { mockStories, mockStoryPages } from '@model/story/mock';
 import { pick } from '@utils/pick';
+import { readStoryToRead } from '@model/story';
 
 type Query = { slug: string[] };
 
@@ -17,22 +17,16 @@ export const getServerSideProps: GetServerSideProps<Props, Query> = async ({
   params,
 }) => {
   const { storyId, pageId } = getRequestData(params!.slug);
+  const { story, page } = (await readStoryToRead(storyId, pageId))!;
 
-  const rawStory = mockStories.find((story) => story.storyId === storyId)!;
-  const story = pick(rawStory, ['storyId', 'title']);
-
-  const rawPage =
-    story &&
-    mockStoryPages.find(
-      (page) => page.pageId === (pageId || rawStory.entryPageId)
-    )!;
-  const page = pick(rawPage, ['name', 'content', 'options']);
+  const pickedStory = pick(story, ['storyId', 'title']);
+  const pickedPage = pick(page, ['name', 'content', 'options']);
 
   return {
     props: {
       ...(await serverSideTranslations(locale!, ['common'])),
-      story,
-      page,
+      story: pickedStory,
+      page: pickedPage,
     },
   };
 };
