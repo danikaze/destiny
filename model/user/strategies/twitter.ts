@@ -1,5 +1,6 @@
-import { generateUniqueId } from '@model';
 import { Profile } from 'passport-twitter';
+import { generateUniqueId } from '@model';
+import { db } from '@utils/db';
 import { createUser, getUserAuthData, User, UserAuthData, UserType } from '..';
 
 export interface TwitterUser {
@@ -30,11 +31,7 @@ export async function getOrCreateUserFromTwitter(
 export async function getUserIdFromTwitter(
   profile: Profile
 ): Promise<User['userId'] | undefined> {
-  // dynamic import to avoid loop dependencies when using mock data
-  const { TwitterUserDB } = require('../mock');
-  const user = TwitterUserDB.find(
-    (user: TwitterUser) => user.profileId === profile.id
-  );
+  const user = (await db.usersTwitter.doc(profile.id).get()).data();
 
   return user ? user.userId : undefined;
 }
@@ -42,10 +39,6 @@ export async function getUserIdFromTwitter(
 export async function createUserFromTwitter(
   profile: Profile
 ): Promise<UserAuthData> {
-  // dynamic import to avoid loop dependencies when using mock data
-  const { UserDB } = require('../mock');
-  const { TwitterUserDB } = require('../mock');
-
   // if there's already a user for this twitter profile, just return it
   const existingUser = await getUserIdFromTwitter(profile);
   if (existingUser) return (await getUserAuthData(existingUser))!;
@@ -60,7 +53,7 @@ export async function createUserFromTwitter(
     type: UserType.TWITTER_USER,
   });
 
-  TwitterUserDB.push({
+  await db.usersTwitter.doc(profile.id).set({
     userId,
     profileId: profile.id,
   });

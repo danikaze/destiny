@@ -29,8 +29,10 @@ export function useUserStoryPage(props: Props) {
   async function savePage() {
     try {
       const name = ref.title.current!.value;
+      const content = ref.content.current!.value;
       await callEditStoryPageApi(props.story.storyId, props.page.pageId, {
         name,
+        content,
       });
     } catch (error) {
       logger.error(error);
