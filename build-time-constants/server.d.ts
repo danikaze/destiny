@@ -25,3 +25,8 @@ declare const AUTH_TWITTER_CALLBACK_ABS_URL: string;
 declare const AUTH_TWITTER_API_KEY: string;
 /** Twitter API key secret used for authentication */
 declare const AUTH_TWITTER_API_KEY_SECRET: string;
+
+/** Name of the firebase app to initialize */
+declare const FIREBASE_APP_NAME: string;
+/** Configuration to initialize the firebase.firestore.app */
+declare const FIREBASE_APP_CONFIG: {};

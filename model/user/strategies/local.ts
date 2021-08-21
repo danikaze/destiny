@@ -5,6 +5,7 @@ import {
   USERNAME_MAX_CHARS,
 } from '@utils/constants/user';
 import { encryptPassword, generateSalt } from '@utils/crypt';
+import { db } from '@utils/db';
 import { createUser, getUserAuthData, User, UserAuthData, UserType } from '..';
 
 export interface LocalUser {
@@ -22,15 +23,8 @@ export async function authLocalUser(
   password: string
 ): Promise<UserAuthData | undefined> {
   return new Promise(async (resolve) => {
-    // dynamic import to avoid loop dependencies when using mock data
-    const { LocalUserDB } = require('../mock');
-
     // 1. Find the user in the database
-    // TODO: Replace with the real model instead of mock-data
-    const lcUser = username.toLowerCase();
-    const user = LocalUserDB.find(
-      (user: LocalUser) => user.username.toLowerCase() === lcUser
-    );
+    const user = (await db.usersLocal.doc(username.toLowerCase()).get()).data();
     if (!user) return resolve(undefined);
 
     // 2. Encode the provided password with its salt
@@ -49,12 +43,9 @@ export async function createLocalUser({
   username,
   password,
 }: CreateLocalUserData): Promise<UserAuthData> {
-  // dynamic import to avoid loop dependencies when using mock data
-  const { LocalUserDB } = require('../mock');
-
-  const existingUser = LocalUserDB.find(
-    (user: LocalUser) => user.username.toLowerCase() === username.toLowerCase()
-  );
+  const existingUser = (
+    await db.usersLocal.doc(username.toLowerCase()).get()
+  ).data();
   if (existingUser) {
     throw new Error('Username already exists');
   }
@@ -77,7 +68,7 @@ export async function createLocalUser({
   const salt = generateSalt(LOCAL_SALT_SIZE);
   const pwd = await encryptPassword(password, salt);
 
-  LocalUserDB.push({
+  await db.usersLocal.doc(username.toLowerCase()).set({
     salt,
     username,
     userId: user.userId,

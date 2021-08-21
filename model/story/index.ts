@@ -1,30 +1,41 @@
 import { StoryPageProps } from '@components/user-story';
 import { User } from '@model/user';
+import { db } from '@utils/db';
+import { withoutUndefined } from '@utils/without-undefined';
 import { Story, StoryPage, StoryState } from './interface';
-import { mockStories, mockStoryPages } from './mock';
 
 export async function createStory(story: Story): Promise<void> {
-  mockStories.push(story);
+  await db.stories.doc(story.storyId).set(story);
 }
 
 export async function createStoryPage(storyPage: StoryPage): Promise<void> {
-  mockStoryPages.push(storyPage);
+  await db.stories
+    .doc(storyPage.storyId)
+    .collection('pages')
+    .doc(storyPage.pageId)
+    .set(storyPage);
 }
 
 export async function readPublishedStories(): Promise<Story[]> {
-  return mockStories.filter((story) => story.state === StoryState.PUBLISHED);
+  const results = await db.stories
+    .where('state', '==', StoryState.PUBLISHED)
+    .get();
+  return results.docs.map((doc) => doc.data());
 }
 
 export async function readStoryToRead(
   storyId: Story['storyId'],
   firstPageId?: StoryPage['pageId']
 ): Promise<{ story: Story; page: StoryPage } | undefined> {
-  const story = mockStories.find((story) => story.storyId === storyId)!;
+  const story = (await db.stories.doc(storyId).get()).data();
   const page =
     story &&
-    mockStoryPages.find(
-      (page) => page.pageId === (firstPageId || story.entryPageId)
-    )!;
+    (
+      await db
+        .storyPages(storyId)
+        .doc(firstPageId || story.entryPageId)
+        .get()
+    ).data();
 
   if (!story || !page) return;
   return { story, page };
@@ -33,21 +44,20 @@ export async function readStoryToRead(
 export async function readUserStories(
   userId: User['userId']
 ): Promise<Story[]> {
-  return mockStories.filter((story) => story.authorUserId === userId);
+  const results = await db.stories.where('authorUserId', '==', userId).get();
+  return results.docs.map((doc) => doc.data());
 }
 
 export async function readUserStory(
   userId: User['userId'],
   storyId: Story['storyId']
 ): Promise<{ story: Story; pages: StoryPage[] } | undefined> {
-  const story = mockStories.filter(
-    (story) => story.authorUserId === userId && story.storyId === storyId
-  )[0];
+  const story = (await db.stories.doc(storyId).get()).data();
 
-  if (!story) return;
+  if (!story || story.authorUserId !== userId) return;
 
-  const pages = mockStoryPages.filter(
-    (page) => page.storyId === story!.storyId
+  const pages = (await db.storyPages(storyId).get()).docs.map((doc) =>
+    doc.data()
   );
 
   return { story, pages };
@@ -57,9 +67,7 @@ export async function readStoryPage(
   storyId: StoryPage['storyId'],
   pageId: StoryPage['pageId']
 ): Promise<StoryPage | undefined> {
-  return mockStoryPages.find(
-    (page) => page.pageId === pageId && page.storyId === storyId
-  );
+  return (await db.storyPages(storyId).doc(pageId).get()).data();
 }
 
 export async function updateStory(
@@ -72,31 +80,16 @@ export async function updateStory(
     >
   >
 ): Promise<void> {
-  const story = mockStories.find(
-    (story) => story.authorUserId === userId && story.storyId === storyId
-  );
+  const storyDoc = db.stories.doc(storyId);
+  const story = (await storyDoc.get()).data();
 
-  if (!story) {
+  if (!story || story.authorUserId !== userId) {
     throw new Error('Invalid storyId');
   }
 
-  let changed = false;
-  if (data.title !== undefined) {
-    story.title = data.title;
-    changed = true;
-  }
-  if (data.state !== undefined) {
-    story.state = data.state;
-    changed = true;
-  }
-  if (data.entryPageId !== undefined) {
-    story.entryPageId = data.entryPageId;
-    changed = true;
-  }
-
-  if (changed) {
-    story.updatedAt = Date.now();
-  }
+  const changes = withoutUndefined<Partial<Story>>(data);
+  changes.updatedAt = Date.now();
+  await storyDoc.update(changes);
 }
 
 export async function updateStoryPage(
@@ -105,44 +98,24 @@ export async function updateStoryPage(
   pageId: StoryPage['pageId'],
   data: Partial<Omit<StoryPage, 'storyId' | 'pageId'>>
 ): Promise<void> {
-  const story = mockStories.find(
-    (story) => story.authorUserId === userId && story.storyId === storyId
-  );
-
-  if (!story) {
+  const story = (await db.stories.doc(storyId).get()).data();
+  if (!story || story.authorUserId !== userId) {
     throw new Error('Invalid storyId');
   }
 
-  const page = mockStoryPages.find(
-    (page) => page.storyId === storyId && page.pageId === pageId
-  );
-
-  if (!page) {
-    throw new Error('Invalid pageId');
-  }
-
-  if (data.name !== undefined) {
-    page.name = data.name;
-  }
-  if (data.content !== undefined) {
-    page.content = data.content;
-  }
-  if (data.options !== undefined) {
-    page.options = data.options;
-  }
+  const pageDoc = db.storyPages(storyId).doc(pageId);
+  await pageDoc.update(withoutUndefined(data));
 }
 
 export async function deleteUserStory(
   userId: User['userId'],
   storyId: Story['storyId']
 ): Promise<void> {
-  const storyIndex = mockStories.findIndex(
-    (story) => story.authorUserId === userId && story.storyId === storyId
-  );
+  const storyDoc = db.stories.doc(storyId);
+  const story = (await storyDoc.get()).data();
+  if (!story || story.authorUserId !== userId) return;
 
-  if (storyIndex !== -1) {
-    mockStories.splice(storyIndex, 1);
-  }
+  await storyDoc.delete();
 }
 
 export async function deleteUserStoryPage(
@@ -150,23 +123,14 @@ export async function deleteUserStoryPage(
   storyId: StoryPage['storyId'],
   pageId: StoryPageProps['pageId']
 ): Promise<void> {
-  const story = mockStories.find(
-    (story) => story.authorUserId === userId && story.storyId === storyId
-  );
-
-  if (!story) {
+  const story = (await db.stories.doc(storyId).get()).data();
+  if (!story || story.authorUserId !== userId) {
     throw new Error('Invalid storyId');
   }
-
   if (story.entryPageId === pageId) {
     throw new Error(`Can't delete current entry page`);
   }
 
-  const pageIndex = mockStoryPages.findIndex(
-    (page) => page.storyId === storyId && page.pageId === pageId
-  );
-
-  if (pageIndex !== -1) {
-    mockStoryPages.splice(pageIndex, 1);
-  }
+  const pageDoc = db.storyPages(storyId).doc(pageId);
+  await pageDoc.delete();
 }

@@ -1,4 +1,5 @@
 import { generateUniqueId } from '@model';
+import { db } from '@utils/db';
 
 export type UserRole = 'admin' | 'user';
 
@@ -22,12 +23,9 @@ type CreateUserData = Pick<User, 'username' | 'role' | 'type'>;
 export async function getUserAuthData(
   userId: User['userId'] | User
 ): Promise<UserAuthData | undefined> {
-  // dynamic import to avoid loop dependencies when using mock data
-  const { UserDB } = require('./mock');
-
   const user =
     typeof userId === 'string'
-      ? UserDB.find((user: User) => user.userId === userId)
+      ? (await db.users.doc(userId).get()).data()
       : userId;
   if (!user) return;
 
@@ -39,9 +37,6 @@ export async function getUserAuthData(
 }
 
 export async function createUser(user: CreateUserData): Promise<UserAuthData> {
-  // dynamic import to avoid loop dependencies when using mock data
-  const { UserDB } = require('./mock');
-
   // tslint:disable-next-line:no-unnecessary-type-annotation
   const userId: User['userId'] = generateUniqueId();
 
@@ -50,7 +45,7 @@ export async function createUser(user: CreateUserData): Promise<UserAuthData> {
     userId,
   };
 
-  UserDB.push(newUser);
+  await db.users.doc(userId).set(newUser);
 
   return {
     userId,
